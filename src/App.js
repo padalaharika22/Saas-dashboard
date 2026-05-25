@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+iimport { useEffect, useState } from "react";
 import axios from "axios";
 
 import {
@@ -14,16 +14,19 @@ import {
 } from "recharts";
 
 function App() {
-
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/analytics/admin")
+    axios
+      .get("https://saas-backend-hnjl.onrender.com/api/analytics/admin")
       .then((res) => {
         setData(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   }, []);
 
@@ -42,47 +45,23 @@ function App() {
       minHeight: "100vh",
       padding: "20px"
     }}>
-
       <h1>📊 SaaS Admin Dashboard</h1>
       <p>Multi-Tenant E-Commerce Analytics</p>
 
       {/* CARDS */}
-      <div style={{
-        display: "flex",
-        gap: "20px",
-        marginTop: "20px"
-      }}>
+      <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
 
-        <div style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "10px",
-          flex: 1
-        }}>
+        <div style={{ background: "white", padding: "20px", borderRadius: "10px", flex: 1 }}>
           <h3>💰 Revenue</h3>
-          <h2>
-            {data ? data.totalRevenue : "Loading..."}
-          </h2>
+          <h2>{loading ? "Loading..." : data?.totalRevenue}</h2>
         </div>
 
-        <div style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "10px",
-          flex: 1
-        }}>
+        <div style={{ background: "white", padding: "20px", borderRadius: "10px", flex: 1 }}>
           <h3>📦 Orders</h3>
-          <h2>
-            {data ? data.totalOrders : "Loading..."}
-          </h2>
+          <h2>{loading ? "Loading..." : data?.totalOrders}</h2>
         </div>
 
-        <div style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "10px",
-          flex: 1
-        }}>
+        <div style={{ background: "white", padding: "20px", borderRadius: "10px", flex: 1 }}>
           <h3>🏪 Vendors</h3>
           <h2>18</h2>
         </div>
@@ -90,13 +69,7 @@ function App() {
       </div>
 
       {/* LINE CHART */}
-      <div style={{
-        marginTop: "30px",
-        background: "white",
-        padding: "20px",
-        borderRadius: "10px"
-      }}>
-
+      <div style={{ marginTop: "30px", background: "white", padding: "20px", borderRadius: "10px" }}>
         <h3>📈 Revenue Analytics</h3>
 
         <ResponsiveContainer width="100%" height={300}>
@@ -105,25 +78,13 @@ function App() {
             <XAxis dataKey="day" />
             <YAxis />
             <Tooltip />
-            <Line
-              type="monotone"
-              dataKey="revenue"
-              stroke="#8884d8"
-              strokeWidth={3}
-            />
+            <Line type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={3} />
           </LineChart>
         </ResponsiveContainer>
-
       </div>
 
       {/* BAR CHART */}
-      <div style={{
-        marginTop: "30px",
-        background: "white",
-        padding: "20px",
-        borderRadius: "10px"
-      }}>
-
+      <div style={{ marginTop: "30px", background: "white", padding: "20px", borderRadius: "10px" }}>
         <h3>📊 Orders Analytics</h3>
 
         <ResponsiveContainer width="100%" height={300}>
@@ -135,17 +96,10 @@ function App() {
             <Bar dataKey="orders" fill="#82ca9d" />
           </BarChart>
         </ResponsiveContainer>
-
       </div>
 
-      {/* VENDOR DASHBOARD */}
-      <div style={{
-        marginTop: "30px",
-        background: "white",
-        padding: "20px",
-        borderRadius: "10px"
-      }}>
-
+      {/* VENDOR TABLE */}
+      <div style={{ marginTop: "30px", background: "white", padding: "20px", borderRadius: "10px" }}>
         <h3>🏪 Vendor Dashboard</h3>
 
         <table width="100%" cellPadding="10">
@@ -163,13 +117,11 @@ function App() {
               <td>$5000</td>
               <td>120</td>
             </tr>
-
             <tr>
               <td>Vendor B</td>
               <td>$3200</td>
               <td>90</td>
             </tr>
-
             <tr>
               <td>Vendor C</td>
               <td>$2100</td>
@@ -177,7 +129,6 @@ function App() {
             </tr>
           </tbody>
         </table>
-
       </div>
 
     </div>
